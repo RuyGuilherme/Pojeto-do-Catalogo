@@ -1,95 +1,83 @@
-import React from 'react';
-import Api from '../../api/api';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import Api from "../../Api/Api";
+import { useNavigate } from "react-router-dom";
 
 const Cadastro = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (evento) => {
     evento.preventDefault();
-    const nome = evento.target.nome.value;
-    const plataforma = evento.target.plataforma.value; 
-    const valor = evento.target.valor.value;
-    const genero = evento.target.genero.value;
-    const nota = evento.target.nota.value;
-    const anoLancamento = evento.target.ano.value;
+    const titulo = evento.target.titulo.value;
+    const descricao = evento.target.descricao.value;
+    const prioridade = evento.target.prioridade.value;
+    const status = evento.target.status.value;
+    const prazo = evento.target.prazo.value;
 
-    const game = {
-      nome,
-      plataforma,
-      valor,
-      genero,
-      nota,
-      anoLancamento
+    const afazer = {
+      titulo,
+      descricao,
+      prioridade,
+      status,
+      prazo
     }
-    console.log(game);
 
-    const response = await Api.fetchPost(game);
-    const result = await response.json();
+    try {
+      const response = await Api.fetchPost(afazer);
+      if(response.status === 500) {
+        console.error('Erro no servidor')
+      }
+      const result = await response.json().catch(err => console.log('ERRO', err));
+      alert(result.message);
+    } catch(err) {
+      console.log('erro', err);
+    }
 
-    alert(result.message);
+    // const response = await Api.fetchPost(afazer);
+    // const result = await response.json();
+
     navigate('/');
   }
 
   return (
-    <div className='container'>
-      <div className='card mt-4'>
-        <div className='card-title'>
-          <h3 className='m-3'>Cadastro de Games</h3>
-        </div>
-        <div className='card-body'>
-          <form method='POST' onSubmit={handleSubmit}>
-            <div className='row mb-4'>
-              <div className='col-4'>
-                <div className='form-group'>
-                  <label htmlFor='nome'>Nome do Game:</label>
-                  <input id='nome' className='form-control' type='text' placeholder='Digite o nome do game' name='nome'/>
-                </div>
-              </div>
-              <div className='col-4'>
-                <div className='form-group'>
-                  <label htmlFor='plataforma'>Plataforma do Game:</label>
-                  <input id='plataforma' className='form-control' type='text' placeholder='Digite a plataforma do game' name='plataforma'/>
-                </div>
-              </div>
-              <div className='col-4'>
-                <div className='form-group'>
-                  <label htmlFor='valor'>Valor do Game:</label>
-                  <input id='valor' className='form-control' type='text' placeholder='Digite o valor do game' name='valor'/>
-                </div>
-              </div>
+    <div className="card container col-6 p-3">
+      <div className="row g-3 align-items-center">
+        <h2>Adicionar Novo Afazer</h2>
+        <form method="POST" onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <label htmlFor="titulo" className="form-label">Titulo</label>
+            <input id="titulo" type="text" placeholder="Titulo" className="form-control" name="titulo" required/>
+          </div>
+          <div className="mb-3">
+            <label htmlFor="descricao" className="form-label">Descrição</label>
+            <input id="descricao" type="text" placeholder="Descrição" className="form-control" name="descricao" />
+          </div>
+          <div className="row mb-3">
+            <div className="col">
+              <label htmlFor="prioridade" className="form-label">Prioridade</label>
+              <select id="prioridade" type="text" placeholder="Prioridade" className="form-select" name="prioridade">
+                <option>Alta</option>
+                <option>Média</option>
+                <option>Baixa</option>
+              </select>
             </div>
-            <div className='row mb-4'>
-              <div className='col-4'>
-                <div className='form-group'>
-                  <label htmlFor='genero'>Genero do Game:</label>
-                  <input id='genero' className='form-control' type='text' placeholder='Digite o genero do game' name='genero'/>
-                </div>
-              </div>
-              <div className='col-4'>
-                <div className='form-group'>
-                  <label htmlFor='nota'>Nota do Game:</label>
-                  <input id='nota' className='form-control' type='text' placeholder='Digite a nota do game' name='nota'/>
-                </div>
-              </div>
-              <div className='col-4'>
-                <div className='form-group'>
-                  <label htmlFor='ano'>Ano do Game:</label>
-                  <input id='ano' className='form-control' type='text' placeholder='Digite o ano do game' name='ano'/>
-                </div>
-              </div>
+            <div className="col">
+              <label htmlFor="status" className="form-label">Status</label>
+              <select id="status" type="text" placeholder="Status" className="form-select" name="status">
+                <option>Feito</option>
+                <option>Fazendo</option>
+                <option>Afazer</option>
+              </select>
             </div>
-            <div className='row'>
-              <div className='col-4'>
-                <button className='btn btn-success me-2' type='submit'>Enviar</button>
-                <button className='btn btn-outline-primary'>Voltar</button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
+          </div>
+          <div className="mb-3">
+            <label htmlFor="prazo" className="form-label">Prazo</label>
+            <input type="date" id="date" className="form-control" name="prazo"/>
+          </div>
+          <button id="botao" type="submit" className="btn btn-primary">Enviar</button>
+        </form>
+      </div>  
     </div>
   )
 }
 
-export default Cadastro
+export default Cadastro;

@@ -1,11 +1,11 @@
 import React from 'react';
-import ListGames from '../../components/structure/ListGames';
+import ListAfazeres from '../../components/structure/ListAfazeres';
 
 const Home = () => {
   return(
     <div className="container">
-      <h1 className="text-center h1 mt-3">Blue Games ! ! </h1>
-      <ListGames/>
+      <h1 className="text-center h1 mt-3">Lista de Afazeres</h1>
+      <ListAfazeres />
     </div>
   )
 }
